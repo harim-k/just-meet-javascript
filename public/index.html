@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>솦개팅</title>
+    <link href="style.css" rel="stylesheet" type="text/css"> <!-- 스타일 파일 연결 -->
+</head>
+<body>
+<div class="centered-container"> <!-- 가운데 정렬을 위한 컨테이너 추가 -->
+    <h1>프로필</h1>
+
+    <div id="profile-list">
+
+        <div class="gender-section">
+            <h2>남자</h2>
+            <ul class="profile-list" id="male-profiles">
+                <!-- 여기에 남성 프로필 목록이 나타날 것입니다. -->
+            </ul>
+        </div>
+
+        <div class="gender-section">
+            <h2>여자</h2>
+            <ul class="profile-list" id="female-profiles">
+                <!-- 여기에 여성 프로필 목록이 나타날 것입니다. -->
+            </ul>
+        </div>
+    </div>
+
+    <button id="profile-button" onclick="location.href='profile.html'">프로필 등록하기</button> <!-- 프로필 등록하기 버튼 추가 -->
+
+</div>
+
+<script>
+
+    function removeUndefinedProperties(profile) {
+        if (profile.name === undefined) profile.name = "-";
+        if (profile.age === undefined) profile.age = "-";
+        if (profile.job === undefined) profile.job = "-";
+        if (profile.bio === undefined) profile.bio = "-";
+        if (profile.idealType === undefined) profile.idealType = "-";
+        if (profile.instagram === undefined) profile.instagram = "-";
+    }
+
+    function createProfileCard(profile) {
+        removeUndefinedProperties(profile);
+
+        const profileCard = document.createElement("div");
+        profileCard.classList.add("profile-card");
+        profileCard.id = `profile-${profile.name}`;
+
+        const name = document.createElement("h3");
+        name.textContent = profile.name;
+
+        const age = document.createElement("p");
+        age.textContent = `나이: ${profile.age}`;
+
+        const job = document.createElement("p");
+        job.textContent = `직업: ${profile.job}`;
+
+        const bio = document.createElement("p");
+        bio.textContent = `자기소개: ${profile.bio}`;
+
+        const idealType = document.createElement("p");
+        idealType.textContent = `이상형: ${profile.idealType}`;
+
+        const instagram = document.createElement("p");
+        instagram.textContent = `인스타그램: ${profile.instagram}`;
+
+        // const updateButton = document.createElement("button");
+        // updateButton.textContent = "수정";
+        // updateButton.addEventListener("click", () => updateProfile(profile));
+
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "삭제";
+        deleteButton.addEventListener("click", () => deleteProfile(profile));
+
+        if (profile.name !== "-") profileCard.appendChild(name);
+        if (profile.age !== "-") profileCard.appendChild(age);
+        if (profile.job !== "-") profileCard.appendChild(job);
+        if (profile.bio !== "-") profileCard.appendChild(bio);
+        if (profile.idealType !== "-") profileCard.appendChild(idealType);
+        if (profile.instagram !== "-") profileCard.appendChild(instagram);
+        // profileCard.appendChild(updateButton);
+        profileCard.appendChild(deleteButton);
+
+        return profileCard;
+    }
+
+    // 페이지 로드 시 프로필 데이터를 가져와서 화면에 표시
+    async function loadMaleProfiles() {
+        try {
+            // 서버의 API 엔드포인트로 GET 요청을 보냅니다.
+            const response = await fetch("/api/male_profiles");
+
+
+            if (response.ok) {
+                const profiles = await response.json();
+                const profileList = document.getElementById("male-profiles");
+
+                // 프로필 목록을 화면에 추가합니다.
+                profiles.forEach((profile) => {
+                    const profileCard = createProfileCard(profile);
+                    profileList.appendChild(profileCard);
+                });
+            } else {
+                alert("프로필 데이터를 불러오는 데 실패했습니다.");
+            }
+        } catch (error) {
+            console.error("오류 발생:", error);
+            alert("프로필 데이터를 불러오는 중 오류가 발생했습니다.");
+        }
+    }
+
+    async function loadFemaleProfiles() {
+        try {
+            // 서버의 API 엔드포인트로 GET 요청을 보냅니다.
+            const response = await fetch("/api/female_profiles");
+
+
+            if (response.ok) {
+                const profiles = await response.json();
+                const profileList = document.getElementById("female-profiles");
+
+                // 프로필 목록을 화면에 추가합니다.
+                profiles.forEach((profile) => {
+                    const profileCard = createProfileCard(profile);
+
+                    profileList.appendChild(profileCard);
+                });
+            } else {
+                alert("프로필 데이터를 불러오는 데 실패했습니다.");
+            }
+        } catch (error) {
+            console.error("오류 발생:", error);
+            alert("프로필 데이터를 불러오는 중 오류가 발생했습니다.");
+        }
+    }
+
+    async function updateProfile(profile) {
+        const profileName = profile.name; // 프로필의 고유 ID 또는 다른 유일한 식별자 사용
+        try {
+            // 서버의 API 엔드포인트로 DELETE 요청을 보냅니다.
+            const response = await fetch(`/api/profiles?name=${profileName}&gender=${profile.gender}`, {
+                method: "POST",
+            });
+
+            if (response.ok) {
+                // 삭제 성공 시 해당 프로필 아이템을 화면에서 제거합니다.
+                const profileItem = document.getElementById(`profile-${profileName}`);
+                if (profileItem) {
+                    profileItem.remove();
+                }
+            } else {
+                alert("프로필 삭제에 실패했습니다.");
+            }
+        } catch (error) {
+            console.error("프로필 삭제 중 오류 발생:", error);
+            alert("프로필 삭제 중 오류가 발생했습니다.");
+        }
+    }
+
+    async function deleteProfile(profile) {
+        const profileName = profile.name; // 프로필의 고유 ID 또는 다른 유일한 식별자 사용
+        try {
+            // 서버의 API 엔드포인트로 DELETE 요청을 보냅니다.
+            const response = await fetch(`/api/profiles?name=${profileName}&gender=${profile.gender}`, {
+                method: "DELETE",
+            });
+
+            if (response.ok) {
+                // 삭제 성공 시 해당 프로필 아이템을 화면에서 제거합니다.
+                const profileItem = document.getElementById(`profile-${profileName}`);
+                if (profileItem) {
+                    profileItem.remove();
+                }
+            } else {
+                alert("프로필 삭제에 실패했습니다.");
+            }
+        } catch (error) {
+            console.error("프로필 삭제 중 오류 발생:", error);
+            alert("프로필 삭제 중 오류가 발생했습니다.");
+        }
+    }
+
+
+    // 페이지 로드 시 프로필 데이터를 가져와서 화면에 표시
+    // loadProfiles();
+    loadMaleProfiles();
+    loadFemaleProfiles();
+</script>
+</body>
+</html>

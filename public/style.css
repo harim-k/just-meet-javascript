@@ -1,0 +1,131 @@
+/* 전체 페이지 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+}
+
+h1 {
+    text-align: center;
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+    margin: 0;
+}
+
+#profile-list {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.gender-section {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    width: 48%; /* 섹션을 좌우로 나누기 위해 너비 조정 */
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+    text-align: center;
+    margin-top: 0;
+    color: #333;
+}
+
+.profile-list {
+    list-style: none;
+    padding: 0;
+}
+
+.profile-list li {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.2);
+}
+
+.profile-list li strong {
+    color: #333;
+}
+
+/* 드롭다운 스타일 */
+#gender-select {
+    padding: 5px;
+}
+
+/* 입력 양식 스타일 */
+label {
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+input[type="button"] {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input[type="button"]:hover {
+    background-color: #555;
+}
+
+/* 프로필 등록하기 버튼 스타일 */
+#profile-button {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    position: fixed; /* 화면에 고정 */
+    bottom: 20px; /* 화면 하단으로부터 20px 위에 위치 */
+    left: 50%; /* 가로 중앙 위치 */
+    transform: translateX(-50%); /* 중앙 정렬을 위한 변환 */
+}
+
+#profile-button:hover {
+    background-color: #555;
+}
+
+/* 프로필 카드 스타일 */
+.profile-card {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* 삭제 버튼 스타일 */
+.delete-button {
+    background-color: #ff4444;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+/* 삭제 버튼 호버 스타일 */
+.delete-button:hover {
+    background-color: #cc0000;
+}
